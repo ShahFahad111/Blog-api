@@ -2,6 +2,8 @@ package com.blog.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,19 +27,19 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping(value = "/")
-	public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+	public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto){
 		UserDto createdUserDto = userService.createUser(userDto);
 		return new ResponseEntity<>(createdUserDto,HttpStatus.CREATED);
 	}
 	
 	@PutMapping(value="/{userId}")
-	public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto,@PathVariable("userId")Integer id){
+	public ResponseEntity<UserDto> updateUser(@RequestBody @Valid UserDto userDto,@PathVariable("userId")Integer id){
 		UserDto updateUser = userService.updateUser(userDto, id);
 		return new ResponseEntity<>(updateUser,HttpStatus.OK);
 	}
 	
 	@GetMapping(value="/{userId}")
-	public ResponseEntity<UserDto> getUser(@PathVariable("userId") Integer id){
+	public ResponseEntity<UserDto> getUser(@PathVariable("userId") @Valid Integer id){
 		UserDto userById = userService.getUserById(id);
 		return new ResponseEntity<>(userById,HttpStatus.OK);
 	}
@@ -49,7 +51,7 @@ public class UserController {
 	}
 	
 	@DeleteMapping(value="{userId}")
-	public ResponseEntity<String> deleteUser(@PathVariable("userId") Integer id){
+	public ResponseEntity<String> deleteUser(@PathVariable("userId") @Valid Integer id){
 		userService.deleteUser(id);
 		return new ResponseEntity("UserId " + id + " Deleted",HttpStatus.OK);
 	}
